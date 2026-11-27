@@ -1,4 +1,5 @@
 export const TICK_MS = 100;
+export const TICKS_PER_MINUTE = 60_000 / TICK_MS;
 export type ClockSpeed = 0 | 1 | 2;
 
 export class SimulationClock {

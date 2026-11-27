@@ -22,13 +22,23 @@ export class Inventory {
     return { ...this.stock };
   }
 
+  amount(resource: Resource): number {
+    return this.stock[resource];
+  }
+
   canPay(cost: Cost): boolean {
     return RESOURCES.every((resource) => this.stock[resource] >= (cost[resource] ?? 0));
   }
 
   pay(cost: Cost): boolean {
-    if (!this.canPay(cost)) return false;
-    for (const resource of RESOURCES) this.stock[resource] -= cost[resource] ?? 0;
+    return this.transact(cost, {});
+  }
+
+  transact(inputs: Cost, outputs: Cost): boolean {
+    if (!this.canPay(inputs)) return false;
+    for (const resource of RESOURCES) {
+      this.stock[resource] += (outputs[resource] ?? 0) - (inputs[resource] ?? 0);
+    }
     return true;
   }
 

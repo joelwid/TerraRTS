@@ -16,7 +16,7 @@ A Geo Scanner surveys every tile within its radius once at completion, including
 
 Past survey and fertility remain after demolition or loss of claim. Selecting a tile distinguishes unscanned land from surveyed empty ground and known deposits. The terrain draws resource cracks only on surveyed tiles. A headless simulation owns placement, inventory, occupancy, and tick progression. The browser uses the same validator for previews and commands and reads view snapshots for rendering.
 
-Resource production and deposit-specific construction rules begin in Milestone 3. This prototype uses the existing costs and starting stock.
+See [Basic economy](ECONOMY.md#milestone-3-basic-economy) for resource production and the additional placement rules for agriculture and extraction.
 
 ## Verification
 

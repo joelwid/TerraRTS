@@ -58,7 +58,7 @@ class FrontierScene extends Phaser.Scene {
       this.plan = this.plan === type ? undefined : type;
       this.hud.showFeedback();
       this.refreshHover();
-    }, () => this.removeSelected());
+    }, () => this.removeSelected(), () => this.toggleProduction(), this.world);
     this.refreshWorld();
 
     this.input.on(Phaser.Input.Events.GAME_OVER, () => { this.pointerInside = true; });
@@ -81,9 +81,11 @@ class FrontierScene extends Phaser.Scene {
 
   update(_time: number, deltaMs: number) {
     const revision = this.world.revision;
+    const economyRevision = this.world.economyRevision;
     const tick = this.world.tick;
     this.clock.advance(deltaMs, () => this.world.step());
     if (revision !== this.world.revision) this.refreshWorld();
+    else if (economyRevision !== this.world.economyRevision) this.refreshEconomy();
     if (tick !== this.world.tick) this.hud.showTick(this.world.tick, this.selectedBuilding());
 
     this.pan(deltaMs);
@@ -129,8 +131,20 @@ class FrontierScene extends Phaser.Scene {
     this.refreshWorld();
   }
 
+  private toggleProduction() {
+    const building = this.selectedBuilding();
+    if (!building?.production) return;
+    this.world.execute({ type: 'pauseProduction', id: building.id, paused: !building.production.paused });
+    this.refreshEconomy();
+  }
+
   private refreshWorld() {
     drawColony(this.territory, this.objects, map, this.world);
+    this.refreshEconomy();
+  }
+
+  private refreshEconomy() {
+    this.hud.showProduction(this.world);
     this.hud.showStock(this.world.stock());
     this.refreshSelection();
     this.refreshHover();
@@ -151,7 +165,7 @@ class FrontierScene extends Phaser.Scene {
     } else {
       const footprint = this.hovered && { ...this.hovered, width: 1, height: 1 };
       outline(this.hover, footprint, 0xf6d8ae);
-      this.hud.showPlacement(this.plan);
+      this.hud.showPlacement(this.plan, undefined, false, this.hud.starterMessage(this.world));
     }
   }
 }

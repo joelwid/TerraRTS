@@ -6,7 +6,11 @@
     "seconds": 30,
     "radius": 8,
     "demolitionRefund": 0.5,
-    "cost": { "wood": 60, "iron": 30, "tools": 30 }
+    "cost": {
+      "wood": 60,
+      "iron": 30,
+      "tools": 30
+    }
   },
   "scanner": {
     "name": "Geo Scanner",
@@ -15,7 +19,10 @@
     "seconds": 5,
     "radius": 20,
     "demolitionRefund": 0,
-    "cost": { "wood": 5, "tools": 2 }
+    "cost": {
+      "wood": 5,
+      "tools": 2
+    }
   },
   "terraformer": {
     "name": "Terraformer",
@@ -24,6 +31,169 @@
     "seconds": 10,
     "radius": 5,
     "demolitionRefund": 0,
-    "cost": { "wood": 10, "tools": 5 }
+    "cost": {
+      "wood": 10,
+      "tools": 5
+    }
+  },
+  "forestry": {
+    "name": "Forestry",
+    "width": 4,
+    "height": 4,
+    "seconds": 15,
+    "demolitionRefund": 0.75,
+    "cost": {
+      "wood": 10,
+      "tools": 5
+    },
+    "fertile": true,
+    "production": {
+      "batchesPerMinute": 10,
+      "inputs": {},
+      "outputs": {
+        "wood": 1
+      }
+    }
+  },
+  "farm": {
+    "name": "Farm",
+    "width": 4,
+    "height": 4,
+    "seconds": 15,
+    "demolitionRefund": 0.75,
+    "cost": {
+      "wood": 10,
+      "tools": 5
+    },
+    "fertile": true,
+    "production": {
+      "batchesPerMinute": 10,
+      "inputs": {},
+      "outputs": {
+        "rations": 1
+      }
+    }
+  },
+  "ironMine": {
+    "name": "Iron Mine",
+    "width": 2,
+    "height": 2,
+    "seconds": 20,
+    "demolitionRefund": 0.75,
+    "cost": {
+      "wood": 15,
+      "tools": 5
+    },
+    "deposit": "iron",
+    "production": {
+      "batchesPerMinute": 10,
+      "inputs": {},
+      "outputs": {
+        "iron": 1
+      }
+    }
+  },
+  "waterTower": {
+    "name": "Water Tower",
+    "width": 2,
+    "height": 2,
+    "seconds": 15,
+    "demolitionRefund": 0.75,
+    "cost": {
+      "wood": 10,
+      "tools": 5
+    },
+    "deposit": "water",
+    "production": {
+      "batchesPerMinute": 10,
+      "inputs": {},
+      "outputs": {
+        "water": 1
+      }
+    }
+  },
+  "siliconMine": {
+    "name": "Silicon Mine",
+    "width": 2,
+    "height": 2,
+    "seconds": 20,
+    "demolitionRefund": 0.75,
+    "cost": {
+      "wood": 15,
+      "tools": 10
+    },
+    "deposit": "silicon",
+    "production": {
+      "batchesPerMinute": 10,
+      "inputs": {},
+      "outputs": {
+        "silicon": 1
+      }
+    }
+  },
+  "blacksmith": {
+    "name": "Blacksmith",
+    "width": 2,
+    "height": 2,
+    "seconds": 20,
+    "demolitionRefund": 0.75,
+    "cost": {
+      "wood": 15,
+      "iron": 10,
+      "tools": 5
+    },
+    "production": {
+      "batchesPerMinute": 5,
+      "inputs": {
+        "wood": 1,
+        "iron": 1
+      },
+      "outputs": {
+        "tools": 1
+      }
+    }
+  },
+  "factory": {
+    "name": "Factory",
+    "width": 3,
+    "height": 3,
+    "seconds": 25,
+    "demolitionRefund": 0.75,
+    "cost": {
+      "wood": 20,
+      "iron": 15,
+      "tools": 10
+    },
+    "production": {
+      "batchesPerMinute": 5,
+      "inputs": {
+        "iron": 1,
+        "silicon": 1
+      },
+      "outputs": {
+        "chips": 1
+      }
+    }
+  },
+  "armory": {
+    "name": "Armory",
+    "width": 2,
+    "height": 2,
+    "seconds": 20,
+    "demolitionRefund": 0.75,
+    "cost": {
+      "wood": 15,
+      "iron": 15,
+      "tools": 10
+    },
+    "production": {
+      "batchesPerMinute": 5,
+      "inputs": {
+        "iron": 2
+      },
+      "outputs": {
+        "weapons": 1
+      }
+    }
   }
 }
