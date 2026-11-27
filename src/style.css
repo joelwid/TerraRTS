@@ -1,0 +1,34 @@
+:root {
+  color-scheme: dark;
+  font-family: system-ui, sans-serif;
+  color: #eedcc2;
+  background: #1b1513;
+}
+
+body { margin: 0; }
+
+main {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  height: 100dvh;
+}
+
+header, footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .5rem 1.5rem;
+  padding: .75rem clamp(.75rem, 3vw, 2rem);
+  background: #251e1b;
+}
+
+header { border-bottom: 1px solid #49372c; }
+footer { border-top: 1px solid #49372c; }
+h1 { margin: 0; color: #f4c084; font-size: 1.25rem; letter-spacing: .04em; }
+.identity, .controls { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem 1rem; }
+#map-name, .controls, .clock { color: #c5ad97; font-size: .83rem; }
+#world { min-width: 0; overflow: hidden; }
+canvas { display: block; }
+output { font-variant-numeric: tabular-nums; }
+kbd { font-size: .85em; padding: .12rem .25rem; border: 1px solid #604939; border-radius: .2rem; }

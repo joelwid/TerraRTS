@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TerraRTS</title>
+    <link rel="icon" href="data:," />
+  </head>
+  <body>
+    <main>
+      <header>
+        <div class="identity"><h1>TerraRTS</h1><span id="map-name"></span></div>
+        <div class="clock">Simulation tick <span id="tick">0</span></div>
+      </header>
+      <div id="world"></div>
+      <footer>
+        <output id="selection" aria-live="polite">No tile selected</output>
+        <div class="controls">
+          <span><kbd>WASD</kbd> / <kbd>↑←↓→</kbd> Pan</span>
+          <span>Wheel to zoom</span>
+          <span>Click to select</span>
+          <span><kbd>Esc</kbd> Clear</span>
+        </div>
+      </footer>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
