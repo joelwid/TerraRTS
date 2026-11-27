@@ -29,6 +29,19 @@ export function addCameraControls(scene: Phaser.Scene, bounds: Phaser.Geom.Recta
     );
   }
 
+  // Keep the same world point centered when the window or HUD changes size.
+  const onResize = (
+    _gameSize: Phaser.Structs.Size, baseSize: Phaser.Structs.Size, _displaySize: Phaser.Structs.Size,
+    previousWidth: number, previousHeight: number,
+  ) => {
+    camera.scrollX += (previousWidth - baseSize.width) / 2;
+    camera.scrollY += (previousHeight - baseSize.height) / 2;
+  };
+  scene.scale.on(Phaser.Scale.Events.RESIZE, onResize);
+  scene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+    scene.scale.off(Phaser.Scale.Events.RESIZE, onResize);
+  });
+
   scene.input.on(Phaser.Input.Events.POINTER_WHEEL, (
     pointer: Phaser.Input.Pointer, _objects: unknown, _dx: number, dy: number,
   ) => {

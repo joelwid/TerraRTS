@@ -9,7 +9,7 @@ body { margin: 0; }
 
 main {
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
   height: 100dvh;
 }
 
@@ -32,3 +32,51 @@ h1 { margin: 0; color: #f4c084; font-size: 1.25rem; letter-spacing: .04em; }
 canvas { display: block; }
 output { font-variant-numeric: tabular-nums; }
 kbd { font-size: .85em; padding: .12rem .25rem; border: 1px solid #604939; border-radius: .2rem; }
+
+.colony-hud {
+  display: grid;
+  gap: .55rem;
+  padding: .55rem clamp(.75rem, 3vw, 2rem);
+  border-bottom: 1px solid #49372c;
+  background: #2c221d;
+}
+
+#stock, #build-options, .selection-details {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .4rem 1rem;
+}
+
+#stock {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: #c5ad97;
+  font-size: .83rem;
+  font-variant-numeric: tabular-nums;
+}
+
+#stock strong { margin-left: .15rem; color: #f4c084; }
+#build-options { gap: .4rem; }
+
+button {
+  padding: .35rem .65rem;
+  border: 1px solid #604939;
+  border-radius: .25rem;
+  background: #352821;
+  color: inherit;
+  font: inherit;
+  font-size: .84rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+button:hover, button[aria-pressed="true"] { border-color: #e0ac74; background: #503a2a; }
+button:focus-visible { outline: 2px solid #f4c084; outline-offset: 2px; }
+button small { display: block; margin-top: .15rem; color: #d5baa1; }
+#placement, #feedback { color: #d5baa1; font-size: .83rem; }
+#placement { min-height: 1.2em; }
+#placement[data-invalid="true"] { color: #ffd1bc; }
+#feedback:empty { display: none; }
+#construction-progress { width: 6rem; accent-color: #e9bb80; }

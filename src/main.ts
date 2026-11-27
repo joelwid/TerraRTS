@@ -1,32 +1,41 @@
 import Phaser from 'phaser';
+import { BUILDINGS, type BuildingType } from './data/buildings';
 import frontier from './data/frontier.json';
 import { loadMap } from './data/map';
 import { addCameraControls, screenToWorld } from './input/camera';
+import { drawColony } from './render/colony';
 import { diamond, HALF_TILE_HEIGHT, HALF_TILE_WIDTH, pickTile, project } from './render/isometric';
-import { drawLandmarks, drawTerrain } from './render/terrain';
+import { drawTerrain } from './render/terrain';
 import { SimulationClock } from './sim/clock';
-import { tileIndex, type Point } from './sim/grid';
+import type { Footprint, Point } from './sim/grid';
+import { World } from './sim/world';
+import { ColonyHud } from './ui/hud';
 import './style.css';
 
 const map = loadMap(frontier);
-const world = document.querySelector<HTMLElement>('#world')!;
-const selection = document.querySelector<HTMLOutputElement>('#selection')!;
-const tickOutput = document.querySelector('#tick')!;
+const viewport = document.querySelector<HTMLElement>('#world')!;
 document.querySelector('#map-name')!.textContent = map.name;
 
-function outline(graphics: Phaser.GameObjects.Graphics, tile: Point | undefined, color: number) {
+function outline(graphics: Phaser.GameObjects.Graphics, footprint: Footprint | undefined, color: number) {
   graphics.clear();
-  if (!tile) return;
-  const points = diamond({ ...tile, width: 1, height: 1 });
+  if (!footprint) return;
+  const points = diamond(footprint);
   graphics.fillStyle(color, 0.2).fillPoints(points, true);
   graphics.lineStyle(2, color).strokePoints(points, true);
 }
 
 class FrontierScene extends Phaser.Scene {
   private readonly clock = new SimulationClock();
+  private readonly world = new World(map);
   private pan!: (deltaMs: number) => void;
+  private hud!: ColonyHud;
+  private territory!: Phaser.GameObjects.Graphics;
+  private objects!: Phaser.GameObjects.Graphics;
   private hover!: Phaser.GameObjects.Graphics;
+  private selection!: Phaser.GameObjects.Graphics;
+  private selected?: Point;
   private hovered?: Point;
+  private plan?: BuildingType;
   private pointerInside = false;
 
   create() {
@@ -41,50 +50,121 @@ class FrontierScene extends Phaser.Scene {
     );
     this.pan = addCameraControls(this, bounds);
     drawTerrain(this, map);
-    drawLandmarks(this, map);
-    this.hover = this.add.graphics().setDepth(-1);
-    // Keep the selected tile outline visible when a landmark overhangs it.
-    const selected = this.add.graphics().setDepth(Number.MAX_SAFE_INTEGER);
+    this.territory = this.add.graphics().setDepth(-1);
+    this.objects = this.add.graphics();
+    this.selection = this.add.graphics().setDepth(1);
+    this.hover = this.add.graphics().setDepth(2);
+    this.hud = new ColonyHud((type) => {
+      this.plan = this.plan === type ? undefined : type;
+      this.hud.showFeedback();
+      this.refreshHover();
+    }, () => this.removeSelected());
+    this.refreshWorld();
 
     this.input.on(Phaser.Input.Events.GAME_OVER, () => { this.pointerInside = true; });
     this.input.on(Phaser.Input.Events.GAME_OUT, () => { this.pointerInside = false; });
     this.input.on(Phaser.Input.Events.POINTER_MOVE, () => { this.pointerInside = true; });
-
-    const select = (point?: Point) => {
-      outline(selected, point, 0xffc674);
-      const tile = point && map.tiles[tileIndex(map, point)];
-      selection.value = point && tile
-        ? `Tile (${point.x}, ${point.y}) · ${tile.terrain === 'rock' ? 'Rock' : 'Soil'}`
-        : 'No tile selected';
-    };
     this.input.on(Phaser.Input.Events.POINTER_DOWN, (pointer: Phaser.Input.Pointer) => {
-      if (pointer.leftButtonDown()) select(pickTile(screenToWorld(camera, pointer), map));
+      if (pointer.leftButtonDown()) this.clickTile(pickTile(screenToWorld(camera, pointer), map));
     });
-    this.input.keyboard!.on('keydown-ESC', () => select());
+    this.input.keyboard!.on('keydown-ESC', () => {
+      if (this.plan) {
+        this.plan = undefined;
+        this.refreshHover();
+      } else {
+        this.selected = undefined;
+        this.refreshSelection();
+      }
+      this.hud.showFeedback();
+    });
   }
 
   update(_time: number, deltaMs: number) {
-    this.clock.advance(deltaMs, (tick) => { tickOutput.textContent = String(tick); });
+    const revision = this.world.revision;
+    const tick = this.world.tick;
+    this.clock.advance(deltaMs, () => this.world.step());
+    if (revision !== this.world.revision) this.refreshWorld();
+    if (tick !== this.world.tick) this.hud.showTick(this.world.tick, this.selectedBuilding());
+
     this.pan(deltaMs);
     const tile = this.pointerInside
       ? pickTile(screenToWorld(this.cameras.main, this.input.activePointer), map)
       : undefined;
     if (tile?.x !== this.hovered?.x || tile?.y !== this.hovered?.y) {
       this.hovered = tile;
-      outline(this.hover, tile, 0xf6d8ae);
+      this.refreshHover();
+    }
+  }
+
+  private clickTile(point?: Point) {
+    if (this.plan && point) {
+      const result = this.world.execute({ type: 'place', building: this.plan, anchor: point });
+      if (!result.ok) {
+        this.refreshHover();
+        return;
+      }
+      this.hud.showFeedback();
+      this.plan = undefined;
+      this.selected = point;
+      this.refreshWorld();
+      return;
+    }
+    this.hud.showFeedback();
+    this.selected = point;
+    this.refreshSelection();
+  }
+
+  private selectedBuilding() {
+    const id = this.selected && this.world.tileAt(this.selected)?.buildingId;
+    return id === undefined ? undefined : this.world.building(id);
+  }
+
+  private removeSelected() {
+    const building = this.selectedBuilding();
+    if (!building) return;
+    const result = this.world.execute({ type: building.complete ? 'demolish' : 'cancel', id: building.id });
+    if (!result.ok) return;
+    const name = BUILDINGS[building.type].name;
+    this.hud.showFeedback(building.complete ? `${name} demolished.` : `${name} construction cancelled.`);
+    this.refreshWorld();
+  }
+
+  private refreshWorld() {
+    drawColony(this.territory, this.objects, map, this.world);
+    this.hud.showStock(this.world.stock());
+    this.refreshSelection();
+    this.refreshHover();
+  }
+
+  private refreshSelection() {
+    const building = this.selectedBuilding();
+    const footprint = building?.footprint ?? (this.selected && { ...this.selected, width: 1, height: 1 });
+    outline(this.selection, footprint, 0xffc674);
+    this.hud.showSelection(this.world, this.selected);
+  }
+
+  private refreshHover() {
+    if (this.plan && this.hovered) {
+      const { footprint, issue } = this.world.preview(this.plan, this.hovered);
+      outline(this.hover, footprint, issue ? 0xf48776 : 0xb3e68b);
+      this.hud.showPlacement(this.plan, issue, true);
+    } else {
+      const footprint = this.hovered && { ...this.hovered, width: 1, height: 1 };
+      outline(this.hover, footprint, 0xf6d8ae);
+      this.hud.showPlacement(this.plan);
     }
   }
 }
 
 new Phaser.Game({
   type: Phaser.AUTO,
-  parent: world,
+  parent: viewport,
   backgroundColor: '#201713',
   fps: { smoothStep: false },
   scene: FrontierScene,
   scale: {
     mode: Phaser.Scale.RESIZE,
-    width: world.clientWidth,
-    height: world.clientHeight,
+    width: viewport.clientWidth,
+    height: viewport.clientHeight,
   },
 });

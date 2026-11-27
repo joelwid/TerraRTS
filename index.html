@@ -12,14 +12,26 @@
         <div class="identity"><h1>TerraRTS</h1><span id="map-name"></span></div>
         <div class="clock">Simulation tick <span id="tick">0</span></div>
       </header>
+      <section class="colony-hud" aria-label="Colony">
+        <ul id="stock" aria-label="Inventory"></ul>
+        <div id="build-options" role="group" aria-label="Build"></div>
+        <output id="placement" aria-live="off"></output>
+      </section>
       <div id="world"></div>
       <footer>
-        <output id="selection" aria-live="polite">No tile selected</output>
+        <div class="selection-panel">
+          <div class="selection-details">
+            <output id="selection" aria-live="polite">No tile selected</output>
+            <progress id="construction-progress" aria-label="Construction progress" hidden></progress>
+            <button id="building-action" type="button" hidden></button>
+          </div>
+          <output id="feedback" aria-live="polite"></output>
+        </div>
         <div class="controls">
           <span><kbd>WASD</kbd> / <kbd>↑←↓→</kbd> Pan</span>
           <span>Wheel to zoom</span>
           <span>Click to select</span>
-          <span><kbd>Esc</kbd> Clear</span>
+          <span><kbd>Esc</kbd> Clear / exit build mode</span>
         </div>
       </footer>
     </main>
