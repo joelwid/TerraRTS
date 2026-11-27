@@ -1,0 +1,9 @@
+# Military and aliens
+All units from Barracks; fixed costs, queue, pay upfront, cancel refunds, no upkeep/population usage. Proposed stats:
+| Unit | Rations | Weapons | Chips | Recruit s | HP | Damage | Interval s | Range tiles | Speed tiles/s |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Infantry |10|5|0|10|100|10|1|3|2|
+| Armored |5|15|5|25|300|25|1.5|4|1.2|
+| Anti-armored |5|10|10|20|140|20|2|6|1.5|
+Infantry beats anti-armored, armored beats infantry, anti-armored beats armored: 2x favorable, 0.5x unfavorable, 1x same. Test actual cost-adjusted outcomes. Buildings armored by default (proposed). Barracks upgrades speed recruitment (proposed 1/1.5/2x). A* logical grid, continuous waypoint movement, no diagonal corner cutting, simple separation, reachable spawn location; queue waits if blocked. Selection, move, attack, attack-move, auto target; explicit retreat overrides auto engagement.
+Aliens guard nest, attack nearby player buildings/units, return when target lost or leash exceeded. No distant random raids. Respawn up to cap while nest alive. Small 3–5 defenders reward 30 rations+20 iron; medium 6–10 reward 60 iron+30 silicon; large 12–20 reward 120 iron+80 silicon. Fixed map composition; use same three combat classes. Nest destruction stops respawns and grants reward exactly once; surviving defenders remain hostile (proposed). No kill rewards. Show known nest radius, composition and reward. Proposed aggression 6 tiles, leash 10, respawn 30s, nest HP 300/600/1000; tune. Towers auto attack, armored targets, HP 400/650/1000, damage 20/35/55, range 5/6/7, interval 1s. Towers can attack nests but avoid dominant tower creep. No ammo. Ordinary buildings need configurable HP; proposed 300, Hub 800, Spaceport 1000. Manual repair proposed fixed iron/tools cost proportional to missing HP, disabled under attack. Destruction removes occupancy and output; no refund. Starting Hub destroyed loses match.
