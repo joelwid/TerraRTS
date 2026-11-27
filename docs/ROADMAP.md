@@ -1,6 +1,6 @@
 # Milestones
 1. Foundation: scaffold browser project, clock, grid, fixed map loader, static isometric terrain, camera, picking, depth sorting. Gate: navigable map and projection tests. **Complete.** See [Foundation implementation and verification](FOUNDATION.md).
-2. Construction/territory: inventory, definitions, placement preview, construction/cancel/demolish, Hub claim and automatic scan, scanner, permanent terraforming, selection UI. Gate: overlapping claims and permanent effects verified.
+2. Construction/territory: inventory, definitions, placement preview, construction/cancel/demolish, Hub claim and automatic scan, scanner, permanent terraforming, selection UI. Gate: overlapping claims and permanent effects verified. **Complete.** See [Construction and territory implementation and verification](CONSTRUCTION.md).
 3. Economy: exact 2x2 deposits, five raw producers, three refiners, shortage handling, manual pause, resource and production HUD. Gate: sustainable basic economy, no negative stocks.
 4. First economic playable: spaceport stages, rocket tracker, victory, menu/restart, pause/speed, timer/results. Gate: complete peaceful browser playthrough from fresh match. Balance early if impossible.
 5. Vertical growth: residences, milestones, upgrades, level sprites, cost/benefit preview. Gate: compact upgraded and low-pop expansion routes both viable.

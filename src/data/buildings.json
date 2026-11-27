@@ -1,0 +1,29 @@
+{
+  "hub": {
+    "name": "Hub",
+    "width": 3,
+    "height": 3,
+    "seconds": 30,
+    "radius": 8,
+    "demolitionRefund": 0.5,
+    "cost": { "wood": 60, "iron": 30, "tools": 30 }
+  },
+  "scanner": {
+    "name": "Geo Scanner",
+    "width": 1,
+    "height": 1,
+    "seconds": 5,
+    "radius": 20,
+    "demolitionRefund": 0,
+    "cost": { "wood": 5, "tools": 2 }
+  },
+  "terraformer": {
+    "name": "Terraformer",
+    "width": 1,
+    "height": 1,
+    "seconds": 10,
+    "radius": 5,
+    "demolitionRefund": 0,
+    "cost": { "wood": 10, "tools": 5 }
+  }
+}

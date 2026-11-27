@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import type { TerrainMap } from '../data/map';
-import { tileIndex, type Footprint, type Point } from '../sim/grid';
-import { compareDepth, diamond, footprintDepth, project } from './isometric';
+import { tileIndex } from '../sim/grid';
+import { diamond } from './isometric';
 
 const CHUNK_SIZE = 16;
 const SOIL = ['#624131', '#674635', '#694837', '#6d4a37'];
@@ -43,52 +43,4 @@ export function drawTerrain(scene: Phaser.Scene, map: TerrainMap): void {
       scene.add.image(offsetX, offsetY, texture.key).setOrigin(0).setDepth(GROUND_DEPTH);
     }
   }
-}
-
-interface Landmark {
-  id: string;
-  footprint: Footprint;
-  height: number;
-  colors: readonly [number, number, number];
-}
-
-export function drawLandmarks(scene: Phaser.Scene, map: TerrainMap): void {
-  const landmarks: Landmark[] = [
-    ...map.rock.map((region) => ({
-      id: `rock-${region.x}-${region.y}`,
-      footprint: { x: region.x, y: region.y, width: 1, height: Math.min(2, region.height) },
-      height: 22,
-      colors: [0x826456, 0x493731, 0x594238] as const,
-    })),
-    { id: 'start', footprint: map.start, height: 55, colors: [0xbd9166, 0x624837, 0x865d44] },
-    {
-      id: 'survey-marker',
-      footprint: { x: map.start.x + map.start.width - 1, y: map.start.y + map.start.height, width: 1, height: 1 },
-      height: 36,
-      colors: [0xe4b476, 0x76513b, 0x9b6b49],
-    },
-  ];
-
-  const sorted = landmarks.map((landmark) => ({
-    ...landmark,
-    depth: footprintDepth(landmark.footprint),
-    screenX: project(landmark.footprint).x,
-  })).sort(compareDepth);
-
-  sorted.forEach(({ footprint, height, colors }, index) => {
-    const base = diamond(footprint);
-    const roof = base.map(({ x, y }) => ({ x, y: y - height }));
-    const graphics = scene.add.graphics().setDepth(index);
-    const faces: Point[][] = [
-      roof,
-      [base[2], base[3], roof[3]!, roof[2]!],
-      [base[1], base[2], roof[2]!, roof[1]!],
-    ];
-    [1, 2, 0].forEach((face) => {
-      graphics.fillStyle(colors[face]!);
-      graphics.fillPoints(faces[face]!, true);
-      graphics.lineStyle(1, 0x2e211a, 0.65);
-      graphics.strokePoints(faces[face]!, true);
-    });
-  });
 }
