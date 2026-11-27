@@ -18,6 +18,14 @@ const BUILDING_STYLES: Record<BuildingType, Pick<Landmark, 'height' | 'colors'>>
   hub: { height: 55, colors: [0xbd9166, 0x624837, 0x865d44] },
   scanner: { height: 43, colors: [0x87a8be, 0x465a6a, 0x607e91] },
   terraformer: { height: 29, colors: [0xa5bd76, 0x546840, 0x73884e] },
+  forestry: { height: 25, colors: [0x829760, 0x425939, 0x60794a] },
+  farm: { height: 15, colors: [0xc8ae62, 0x6d5a32, 0x9b8245] },
+  ironMine: { height: 29, colors: [0xa6948f, 0x62514c, 0x85726a] },
+  waterTower: { height: 53, colors: [0x689bc5, 0x3c556a, 0x4b758f] },
+  siliconMine: { height: 31, colors: [0x8dbac1, 0x4d6670, 0x628990] },
+  blacksmith: { height: 37, colors: [0xbf805b, 0x6d4638, 0x9b6249] },
+  factory: { height: 45, colors: [0xa49abd, 0x5e526b, 0x78688c] },
+  armory: { height: 39, colors: [0xa8a7a1, 0x535351, 0x797872] },
 };
 const CRACK_COLORS = { iron: 0xd4d4d4, water: 0x377cf4, silicon: 0xa3e7f4 };
 
