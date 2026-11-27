@@ -1,0 +1,37 @@
+{
+  "name": "Frontier Basin",
+  "width": 96,
+  "height": 96,
+  "start": { "x": 46, "y": 47, "width": 3, "height": 3 },
+  "rock": [
+    { "x": 12, "y": 12, "width": 11, "height": 3 },
+    { "x": 18, "y": 15, "width": 6, "height": 5 },
+    { "x": 24, "y": 17, "width": 8, "height": 2 },
+    { "x": 59, "y": 20, "width": 5, "height": 11 },
+    { "x": 64, "y": 25, "width": 6, "height": 4 },
+    { "x": 39, "y": 36, "width": 5, "height": 2 },
+    { "x": 55, "y": 42, "width": 3, "height": 3 },
+    { "x": 39, "y": 55, "width": 2, "height": 4 },
+    { "x": 41, "y": 57, "width": 3, "height": 2 },
+    { "x": 17, "y": 66, "width": 8, "height": 5 },
+    { "x": 20, "y": 71, "width": 3, "height": 8 },
+    { "x": 67, "y": 65, "width": 11, "height": 3 },
+    { "x": 74, "y": 68, "width": 5, "height": 9 },
+    { "x": 49, "y": 87, "width": 12, "height": 2 }
+  ],
+  "deposits": [
+    { "id": "start-iron", "resource": "iron", "x": 42, "y": 47, "width": 2, "height": 2 },
+    { "id": "start-water", "resource": "water", "x": 50, "y": 49, "width": 2, "height": 2 },
+    { "id": "west-iron", "resource": "iron", "x": 30, "y": 45, "width": 2, "height": 2 },
+    { "id": "west-water", "resource": "water", "x": 27, "y": 52, "width": 2, "height": 2 },
+    { "id": "north-silicon", "resource": "silicon", "x": 46, "y": 28, "width": 2, "height": 2 },
+    { "id": "north-iron", "resource": "iron", "x": 51, "y": 31, "width": 2, "height": 2 },
+    { "id": "northwest-silicon", "resource": "silicon", "x": 36, "y": 24, "width": 2, "height": 2 },
+    { "id": "east-iron", "resource": "iron", "x": 74, "y": 48, "width": 2, "height": 2 },
+    { "id": "south-silicon", "resource": "silicon", "x": 47, "y": 81, "width": 2, "height": 2 }
+  ],
+  "nestSites": [
+    { "id": "east", "size": "small", "x": 70, "y": 49, "width": 2, "height": 2 },
+    { "id": "south", "size": "large", "x": 48, "y": 77, "width": 3, "height": 3 }
+  ]
+}
